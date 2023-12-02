@@ -9,7 +9,7 @@ data class Game(val id: Int, val cubes: List<Cube>)
 fun main() {
 
     fun parseCubes(line: String): List<Cube> {
-        return line.split(": ")[1].split("(, |; )".toRegex()).map {
+        return line.split(": ")[1].split(Regex("(, |; )")).map {
             val countAndColour = it.split(" ")
             Cube(countAndColour[1], countAndColour[0].toInt())
         }
@@ -23,21 +23,13 @@ fun main() {
 
     fun isGamePossible(game: Game): Boolean {
         val bag = mapOf("red" to 12, "green" to 13, "blue" to 14)
-        for (cube in game.cubes) {
-            if (cube.count > bag[cube.color]!!) {
-                return false
-            }
-        }
-        return true
+        return !game.cubes.any { it.count > bag[it.color]!! }
     }
 
     fun part1(input: List<String>): Int {
         val games = parseGames(input)
         return games.fold(0) { sum, game ->
-            if (isGamePossible(game))
-                sum + game.id
-            else
-                sum
+            if (isGamePossible(game)) sum + game.id else sum
         }
     }
     check(part1(readInputAsLines("day02_test")) == 8)
@@ -45,8 +37,8 @@ fun main() {
 
     fun powerOfMinimumSetOfCubes(game: Game): Int {
         val groupedCubesByColor = game.cubes.groupBy { it.color }
-        return groupedCubesByColor.values.fold(1) { power, cube ->
-            power * cube.maxBy { it.count }.count
+        return groupedCubesByColor.values.fold(1) { power, cubes ->
+            power * cubes.maxBy { it.count }.count
         }
     }
 

@@ -32,21 +32,24 @@ fun main() {
     }
 
     fun part2(input: List<String>): Int {
-        return input.fold(0) { sum, text -> sum + findCalibrationValue(text)
-        }
+        return input.fold(0) { sum, text -> sum + findCalibrationValue(text)}
     }
      */
 
+    fun replaceWithDigit(text: String): String {
+        var newText = text
+        listOf(
+            "one" to "o1e", "two" to "t2o", "three" to "t3e", "four" to "f4r", "five" to "f5e",
+            "six" to "s6x", "seven" to "s7n", "eight" to "e8t", "nine" to "n9e"
+        ).forEach {
+            newText = newText.replace(it.first, it.second)
+        }
+        return newText
+    }
+
     fun part2(input: List<String>): Int {
         return input.fold(0) { sum, text ->
-            var newText = text
-            listOf(
-                "one" to "o1e", "two" to "t2o", "three" to "t3e", "four" to "f4r", "five" to "f5e",
-                "six" to "s6x", "seven" to "s7n", "eight" to "e8t", "nine" to "n9e"
-            ).forEach {
-                newText = newText.replace(it.first, it.second)
-            }
-            sum + findCalibrationValue(newText)
+            sum + findCalibrationValue(replaceWithDigit(text))
         }
     }
     check(part2(readInputAsLines("day01p2_test")) == 281)
