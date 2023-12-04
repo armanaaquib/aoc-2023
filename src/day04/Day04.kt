@@ -14,14 +14,17 @@ fun parseCards(input: List<String>): List<Card> {
     }
 }
 
+fun findNoOfMatches(card: Card): Int {
+    return card.availableNumbers.intersect(card.winningNumbers.toSet()).size
+}
+
 fun main() {
     fun findPoints(cards: List<Card>): List<Int> {
         return cards.map {
+            val noOfMatches = findNoOfMatches(it)
             var point = 0
-            for (num in it.availableNumbers) {
-                if (num in it.winningNumbers) {
-                    point = if (point == 0) 1 else point * 2
-                }
+            repeat(noOfMatches) {
+                point = if (point == 0) 1 else point * 2
             }
             point
         }
@@ -33,10 +36,6 @@ fun main() {
     }
     check(part1(readInputAsLines("day04_test")) == 13)
     part1(readInputAsLines("day04")).println()
-
-    fun findNoOfMatches(card: Card): Int {
-        return card.availableNumbers.intersect(card.winningNumbers.toSet()).size
-    }
 
     fun getCopyUpdatedCards(cards: List<Card>): List<Card> {
         cards.forEachIndexed { idx, card ->
