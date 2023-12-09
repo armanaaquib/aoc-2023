@@ -3,9 +3,12 @@ fun main() {
         return input.size
     }
     check(part1(readInputAsLines("sample_test")) == 2)
+    part1(readInputAsLines("sample_test")).println()
 
-    fun part2(input: String): Int {
-        return input.length
+
+    fun part2(input: List<String>): Int {
+        return input.size
     }
-    part2(readInputAsText("sample_test")).println()
+    check(part2(readInputAsLines("sample_test")) == 2)
+    part2(readInputAsLines("sample_test")).println()
 }
